@@ -53,6 +53,7 @@ class App
         }
         else
         {
+            
             include APPPATH . "/Views/errors/404.php";
             exit;
         }
@@ -82,6 +83,17 @@ class App
         //asociamos el resto de segmentos a $this->_params para pasarlos al método llamado, por defecto será un array vacío
         $this->_params = $url ? array_values($url) : [];
     }
+
+    public function initTwig(){
+        // incializar la libreria twig
+        $loader = new \Twig_Loader_Filesystem('App/Vista');
+        // establecer lel objeto twig de manera que desde los controladores se pueda acceder a el
+        $this->twig = new \Twig_Environment($loader, array('cache' => 'cache'));
+        $this->twig = new \Twig_Environment($loader, array('debug' => true,'cache' => 'cache'));
+//        $this->twig->clearCacheFiles();
+    }
+
+
 
     /**
      * [parseUrl Parseamos la url en trozos]
