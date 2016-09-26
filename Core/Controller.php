@@ -2,8 +2,11 @@
 namespace Core;
 defined("APPPATH") OR die("Access denied");
 
-class Controller
+use Core\App;
+
+class Controller extends App
 {
+
     public function __construct()
     {
 

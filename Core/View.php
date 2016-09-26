@@ -2,12 +2,13 @@
 namespace Core;
 defined("APPPATH") OR die("Access denied");
 
-class View
+class View extends App
 {
     /**
      * @var
      */
     protected static $data;
+
 
     /**
      * @var
@@ -17,26 +18,29 @@ class View
     /**
      * @var
      */
-    const EXTENSION_TEMPLATES = "php";
+    const EXTENSION_TEMPLATES = "twig";
+
 
     /**
      * [render Views with data]
      * @param  [String]  [template name]
-     * @return [html]    [render html]
+     * [html]    [render html]
      */
-    public static function render($template)
+    public static function rend($template)
     {
         if(!file_exists(self::VIEWS_PATH . $template . "." . self::EXTENSION_TEMPLATES))
         {
             throw new \Exception("Error: El archivo " . self::VIEWS_PATH . $template . "." . self::EXTENSION_TEMPLATES . " no existe", 1);
         }
 
-        ob_start();
-        extract(self::$data);
-        include(self::VIEWS_PATH . $template . "." . self::EXTENSION_TEMPLATES);
-        $str = ob_get_contents();
-        ob_end_clean();
-        echo $str;
+        echo self::$twig->render($template.'.'.self::EXTENSION_TEMPLATES, self::$data);
+
+        //ob_start();
+        //extract(self::$data);
+        //include(self::VIEWS_PATH . $template . "." . self::EXTENSION_TEMPLATES);
+        //$str = ob_get_contents();
+        //ob_end_clean();
+        //echo $str;
     }
 
     /**
@@ -44,8 +48,9 @@ class View
      * @param [string] $name  [key]
      * @param [mixed] $value [value]
      */
-    public static function set($name, $value)
+    public static function set($data)
     {
-        self::$data[$name] = $value;
+        self::$data = $data;
+        //self::$data[$name] = $value;
     }
 }

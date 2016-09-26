@@ -11,8 +11,8 @@ class Home extends Controller
 
     public function index()
     {
-        View::set("msg", "Hello World!!");
-        View::render("home/index");
+        View::set(['msg' => 'hola mundo']);
+        View::rend("home/index");
     }
 
     /**
@@ -25,7 +25,7 @@ class Home extends Controller
     {
         View::set("user", $user);
         View::set("title", "Custom MVC");
-        View::render("home");
+        View::rend("home");
     }
 
     public function admin($name)
@@ -33,7 +33,7 @@ class Home extends Controller
         $users = Users::getAll();
         View::set("users", $users);
         View::set("title", "Custom MVC");
-        View::render("admin");
+        View::rend("admin");
     }
 
     public function user($id = 1)

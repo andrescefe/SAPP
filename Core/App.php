@@ -25,6 +25,8 @@ class App
      */
     public $config = [];
 
+    public static $twig;
+
     /**
     * @var
     */
@@ -40,9 +42,16 @@ class App
      */
     public function __construct()
     {
+
+        $this->initTwig();
+
         //obtenemos la url parseada
         $url = $this->parseUrl();
 
+        if (!isset($_SESSION)){
+            echo self::$twig->render('login.twig', ['PROJECTPATH' => PROJECTPATH]);
+            exit;
+        }
         //comprobamos que exista el archivo en el directorio Controllers
         if(file_exists(self::CONTROLLERS_PATH.ucfirst($url[0]) . ".php"))
         {
@@ -53,6 +62,7 @@ class App
         }
         else
         {
+
             include APPPATH . "/Views/errors/404.php";
             exit;
         }
@@ -82,6 +92,18 @@ class App
         //asociamos el resto de segmentos a $this->_params para pasarlos al método llamado, por defecto será un array vacío
         $this->_params = $url ? array_values($url) : [];
     }
+
+    public function initTwig(){
+
+        // incializar la libreria twig
+        $loader = new \Twig_Loader_Filesystem(__DIR__.'/../App/Views');
+        // establecer lel objeto twig de manera que desde los controladores se pueda acceder a el
+        self::$twig = new \Twig_Environment($loader);
+        //$this->twig = new \Twig_Environment($loader, array('debug' => true,'cache' => 'cache'));
+        self::$twig->clearCacheFiles();
+    }
+
+
 
     /**
      * [parseUrl Parseamos la url en trozos]
